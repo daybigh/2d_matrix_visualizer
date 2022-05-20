@@ -8,3 +8,18 @@ body {
     align-items: center;
     border: 1px solid red;
 }
+
+canvas {
+    border: 1px solid black;
+}
+
+#input-container {
+    display: flex;
+    border: 1px solid red;
+    justify-content: center;
+}
+
+#input-column {
+    display: flex;
+    flex-direction: column;
+}
