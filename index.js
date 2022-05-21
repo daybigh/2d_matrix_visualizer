@@ -1,68 +1,90 @@
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d'); 
-const u = 4
+const u = 40
+let t = 20
 
-canvas.width = 1900;
-canvas.height = 800;
-
-let l = 300
+canvas.width = 20 * u;
+canvas.height = 20 * u;
 
 ctx.translate(canvas.width / 2, canvas.height / 2)
-
-function drawSpan(vector, offset, c) {
-    ctx.beginPath()
-    ctx.moveTo(0 + offset[0] , -(0 + offset[1]))
-    ctx.lineTo(l * vector[0] + offset[0], -(l * vector[1]) - offset[1])
-    if (c == 1) {
-        ctx.strokeStyle = "cyan"
-    }
-    ctx.stroke()
-
-    ctx.beginPath()
-    ctx.moveTo(0 + offset[0] , -(0 + offset[1]))
-    ctx.lineTo(-(l * vector[0]) + offset[0], l * vector[1] - offset[1])
-    if (c == 1) {
-        ctx.strokeStyle = "cyan"
-    }
-    ctx.stroke()
-}
 
 function matrixMult(matrix, vector) {
     return [vector[0] * matrix[0][0] + vector[1] * matrix[0][1], vector[0] * matrix[1][0] + vector[1] * matrix[1][1]]
 }
 
-m = [
-    [2, 1], 
-    [2, 2]
-    ]
 
-let t = 80
+function displayBaseGrid() {
+    //base vertical
+    for (var i = -t; i <= t; i ++) {
+        ctx.beginPath()
+        for (var j = -t; j <= t; j++) {
+            let vec = [i, j]
+            let vec2 = [i, j + 1]
+            ctx.lineTo(u * vec[0], -u * vec[1])
+        }
+        if (i == 0) {
+            ctx.strokeStyle = "rgb(255, 255, 255)"
+        } else {
+            ctx.strokeStyle = "grey"
+        }
+        ctx.stroke()
+        }
 
-// Base grid
-// for (var i = 0; i < t; i++) {
-//     for (var j = 0; j < t; j++) {
-//         drawSpan([1, 0], [u * i, u * j], 0)
-//         drawSpan([0, 1], [u * i, u * j], 0)
-//     }
-// }
+    //base horizontal
+    for (var i = -t; i <= t; i ++) {
+        ctx.beginPath()
+        for (var j = -t; j <= t; j++) {
+            let vec = [j, i]
+            let vec2 = [j + 1, i]
+            ctx.lineTo(u * vec[0], -u * vec[1])
+        }
+        if (i == 0) {
+            ctx.strokeStyle = "rgb(255, 255, 255)"
+        } else {
+            ctx.strokeStyle = "grey"
+        }
+        ctx.stroke()
+        }
+}
 
 
-//base dots
-for (var i = -t; i < t; i++) {
-    for (var j = -t; j < t; j++) {
-        ctx.fillRect(u * i, -u * j, 2, 2)
+
+
+// Transformed grid
+function displayTransformedGrid(m) {
+
+    for (var i = -t; i <= t; i ++) {
+        ctx.beginPath()
+        for (var j = -t; j <= t; j++) {
+            let vec = matrixMult(m, [i, j])
+            ctx.lineTo(u * vec[0], -u * vec[1])
+    }
+    ctx.strokeStyle = "cyan"
+    ctx.stroke()
+    }
+
+    for (var i = -t; i <= t; i ++) {
+        ctx.beginPath()
+        for (var j = -t; j <= t; j++) {
+            let vec = matrixMult(m, [j, i])
+            ctx.lineTo(u * vec[0], -u * vec[1])
+    }
+    ctx.strokeStyle = "cyan"
+    ctx.stroke()
     }
 }
 
-//transformed dots
-for (var i = -t; i < t; i++) {
-    for (var j = -t; j < t; j++) {
-        let vec = matrixMult(m, [i, j])
-        ctx.fillStyle = "red"
-        ctx.fillRect(u * vec[0], -u * vec[1], 2, 2)
-    }
+function temp() {
+    ctx.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+    displayBaseGrid()
+    let b = [
+        [document.getElementById('m00').value, document.getElementById('m01').value],
+        [document.getElementById('m10').value, document.getElementById('m11').value]
+    ]    
+    displayTransformedGrid(b)
 }
 
+displayBaseGrid()
 
 
 
@@ -72,27 +94,6 @@ for (var i = -t; i < t; i++) {
 
 
 
-
-
-
-
-
-
-
-
-// for (var i = -4; i < 5; i++) {
-//     ctx.beginPath();
-//     ctx.moveTo(- canvas.width / 4, u * i)
-//     ctx.lineTo(canvas.width / 4, u * i)
-//     ctx.stroke()
-// }
-
-// for (var i = -6; i < 7; i++) {
-//     ctx.beginPath();
-//     ctx.moveTo(u * i, -canvas.height / 4)
-//     ctx.lineTo(u * i, canvas.height / 4)
-//     ctx.stroke();
-// }
 
 
 

@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    background-color: black;
 }
 
 #canvas-container {
@@ -22,4 +23,20 @@ canvas {
 #input-column {
     display: flex;
     flex-direction: column;
+}
+
+input {
+    background-color: grey;
+    color: white;
+}
+
+button {
+    width: 50%;
+    background-color: grey;
+    color: white;
+}
+
+#button-container {
+    display: flex;
+    justify-content: center;
 }
